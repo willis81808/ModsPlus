@@ -14,15 +14,15 @@ using ModsPlus;
 
 public class ExampleCard : CustomEffectCard<ExampleEffect>
 {
-    public override CardDetails Details => new CardDetails
-    {
-        Title       = "Example Card",
-        Description = "Your first effect card",
-        ModName     = "<Your Mod ID>",
-        Art         = Assets.YourCoolArt,
-        Rarity      = CardInfo.Rarity.Common,
-        Theme       = CardThemeColor.CardThemeColorType.TechWhite
-    };
+	public override CardDetails Details => new CardDetails
+	{
+		Title       = "Example Card",
+		Description = "Your first effect card",
+		ModName     = "<Your Mod ID>",
+		Art         = Assets.YourCoolArt,
+		Rarity      = CardInfo.Rarity.Common,
+		Theme       = CardThemeColor.CardThemeColorType.TechWhite
+	};
 }
 
 public class ExampleEffect : CardEffect
