@@ -1,5 +1,4 @@
 # Mods Plus
-Adds 11 new cards to the game!
 
 ## Streamlined (and safe) `CardEffect` wrapper
 Do you find yourself writing the same boilerplate over and over when defining cards that attach a `MonoBehaviour` to the player?
