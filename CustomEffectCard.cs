@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,7 @@ namespace ModsPlus
 
             if (effect != null)
             {
-                effect.OnUpgradeCard();
+                effect.OnUpgradeCardInternal();
             }
             else
             {
@@ -99,37 +100,112 @@ namespace ModsPlus
 
         protected virtual void Start()
         {
-            gun.ShootPojectileAction += OnShoot;
-            data.TouchGroundAction += OnTouchGround;
-            data.TouchWallAction += OnTouchWall;
-            health.reviveAction += OnRevive;
-            health.delayedReviveAction += OnDelayedRevive;
-            block.BlockAction += OnBlock;
-            block.BlockActionEarly += OnBlockEarly;
-            block.BlockProjectileAction += OnBlockProjectile;
-            block.BlockRechargeAction += OnBlockRecharge;
-            characterStats.DealtDamageAction += OnDealtDamage;
-            characterStats.WasDealtDamageAction += OnTakeDamage;
-            characterStats.OnReloadDoneAction += OnReloadDone;
-            characterStats.OutOfAmmpAction += OnOutOfAmmo;
+            gun.ShootPojectileAction += OnShootInternal;
+            data.TouchGroundAction += OnTouchGroundInternal;
+            data.TouchWallAction += OnTouchWallInternal;
+            health.reviveAction += OnReviveInternal;
+            health.delayedReviveAction += OnDelayedReviveInternal;
+            block.BlockAction += OnBlockInternal;
+            block.BlockActionEarly += OnBlockEarlyInternal;
+            block.BlockProjectileAction += OnBlockProjectileInternal;
+            block.BlockRechargeAction += OnBlockRechargeInternal;
+            characterStats.DealtDamageAction += OnDealtDamageInternal;
+            characterStats.WasDealtDamageAction += OnTakeDamageInternal;
+            characterStats.OnReloadDoneAction += OnReloadDoneInternal;
+            characterStats.OutOfAmmpAction += OnOutOfAmmoInternal;
         }
 
         protected virtual void OnDestroy()
         {
-            gun.ShootPojectileAction -= OnShoot;
-            data.TouchGroundAction -= OnTouchGround;
-            data.TouchWallAction -= OnTouchWall;
-            health.reviveAction -= OnRevive;
-            health.delayedReviveAction -= OnDelayedRevive;
-            block.BlockAction -= OnBlock;
-            block.BlockActionEarly -= OnBlockEarly;
-            block.BlockProjectileAction -= OnBlockProjectile;
-            block.BlockRechargeAction -= OnBlockRecharge;
-            characterStats.DealtDamageAction -= OnDealtDamage;
-            characterStats.WasDealtDamageAction -= OnTakeDamage;
-            characterStats.OnReloadDoneAction -= OnReloadDone;
-            characterStats.OutOfAmmpAction -= OnOutOfAmmo;
+            gun.ShootPojectileAction -= OnShootInternal;
+            data.TouchGroundAction -= OnTouchGroundInternal;
+            data.TouchWallAction -= OnTouchWallInternal;
+            health.reviveAction -= OnReviveInternal;
+            health.delayedReviveAction -= OnDelayedReviveInternal;
+            block.BlockAction -= OnBlockInternal;
+            block.BlockActionEarly -= OnBlockEarlyInternal;
+            block.BlockProjectileAction -= OnBlockProjectileInternal;
+            block.BlockRechargeAction -= OnBlockRechargeInternal;
+            characterStats.DealtDamageAction -= OnDealtDamageInternal;
+            characterStats.WasDealtDamageAction -= OnTakeDamageInternal;
+            characterStats.OnReloadDoneAction -= OnReloadDoneInternal;
+            characterStats.OutOfAmmpAction -= OnOutOfAmmoInternal;
+
+            StopAllCoroutines();
         }
+
+
+        internal void OnUpgradeCardInternal()
+        {
+            OnUpgradeCard();
+            StartCoroutine(OnUpgradeCardCoroutine());
+        }
+        internal void OnShootInternal(GameObject projectile)
+        {
+            OnShoot(projectile);
+            StartCoroutine(OnShootCoroutine(projectile));
+        }
+        internal void OnTouchGroundInternal(float timeSinceGrounded, Vector3 position, Vector3 groundNormal, Transform groundTransform)
+        {
+            OnTouchGround(timeSinceGrounded, position, groundNormal, groundTransform);
+            StartCoroutine(OnTouchGroundCoroutine(timeSinceGrounded, position, groundNormal, groundTransform));
+        }
+        internal void OnTouchWallInternal(float timeSinceLastGrab, Vector3 position, Vector3 wallNormal)
+        {
+            OnTouchWall(timeSinceLastGrab, position, wallNormal);
+            StartCoroutine(OnTouchWallCoroutine(timeSinceLastGrab, position, wallNormal));
+        }
+        internal void OnReviveInternal()
+        {
+            OnRevive();
+            StartCoroutine(OnReviveCoroutine());
+        }
+        internal void OnDelayedReviveInternal()
+        {
+            OnDelayedRevive();
+            StartCoroutine(OnDelayedReviveCoroutine());
+        }
+        internal void OnBlockInternal(BlockTrigger.BlockTriggerType blockTriggerType)
+        {
+            OnBlock(blockTriggerType);
+            StartCoroutine(OnBlockCoroutine(blockTriggerType));
+        }
+        internal void OnBlockEarlyInternal(BlockTrigger.BlockTriggerType blockTriggerType)
+        {
+            OnBlockEarly(blockTriggerType);
+            StartCoroutine(OnBlockEarlyCoroutine(blockTriggerType));
+        }
+        internal void OnBlockProjectileInternal(GameObject projectile, Vector3 forward, Vector3 hitPosition)
+        {
+            OnBlockProjectile(projectile, forward, hitPosition);
+            StartCoroutine(OnBlockProjectileCoroutine(projectile, forward, hitPosition));
+        }
+        internal void OnBlockRechargeInternal()
+        {
+            OnBlockRecharge();
+            StartCoroutine(OnBlockRechargeCoroutine());
+        }
+        internal void OnDealtDamageInternal(Vector2 damage, bool selfDamage)
+        {
+            OnDealtDamage(damage, selfDamage);
+            StartCoroutine(OnDealtDamageCoroutine(damage, selfDamage));
+        }
+        internal void OnTakeDamageInternal(Vector2 damage, bool selfDamage)
+        {
+            OnTakeDamage(damage, selfDamage);
+            StartCoroutine(OnTakeDamageCoroutine(damage, selfDamage));
+        }
+        internal void OnReloadDoneInternal(int bulletsReloaded)
+        {
+            OnReloadDone(bulletsReloaded);
+            StartCoroutine(OnReloadDoneCoroutine(bulletsReloaded));
+        }
+        internal void OnOutOfAmmoInternal(int bulletsReloaded)
+        {
+            OnOutOfAmmo(bulletsReloaded);
+            StartCoroutine(OnOutOfAmmoCoroutine(bulletsReloaded));
+        }
+
 
         public virtual void OnUpgradeCard() { }
         public virtual void OnShoot(GameObject projectile) { }
@@ -145,5 +221,20 @@ namespace ModsPlus
         public virtual void OnTakeDamage(Vector2 damage, bool selfDamage) { }
         public virtual void OnReloadDone(int bulletsReloaded) { }
         public virtual void OnOutOfAmmo(int bulletsReloaded) { }
+
+        public virtual IEnumerator OnUpgradeCardCoroutine() { yield return null; }
+        public virtual IEnumerator OnShootCoroutine(GameObject projectile) { yield return null; }
+        public virtual IEnumerator OnTouchGroundCoroutine(float timeSinceGrounded, Vector3 position, Vector3 groundNormal, Transform groundTransform) { yield return null; }
+        public virtual IEnumerator OnTouchWallCoroutine(float timeSinceLastGrab, Vector3 position, Vector3 wallNormal) { yield return null; }
+        public virtual IEnumerator OnReviveCoroutine() { yield return null; }
+        public virtual IEnumerator OnDelayedReviveCoroutine() { yield return null; }
+        public virtual IEnumerator OnBlockCoroutine(BlockTrigger.BlockTriggerType blockTriggerType) { yield return null; }
+        public virtual IEnumerator OnBlockEarlyCoroutine(BlockTrigger.BlockTriggerType blockTriggerType) { yield return null; }
+        public virtual IEnumerator OnBlockProjectileCoroutine(GameObject projectile, Vector3 forward, Vector3 hitPosition) { yield return null; }
+        public virtual IEnumerator OnBlockRechargeCoroutine() { yield return null; }
+        public virtual IEnumerator OnDealtDamageCoroutine(Vector3 damage, bool selfDamage) { yield return null; }
+        public virtual IEnumerator OnTakeDamageCoroutine(Vector3 damage, bool selfDamage) { yield return null; }
+        public virtual IEnumerator OnReloadDoneCoroutine(int bulletsReloaded) { yield return null; }
+        public virtual IEnumerator OnOutOfAmmoCoroutine(int bulletsReloaded) { yield return null; }
     }
 }

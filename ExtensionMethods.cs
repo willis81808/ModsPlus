@@ -20,5 +20,11 @@ namespace ModsPlus
         {
             return (Player)pm.InvokeMethod("GetPlayerWithID", playerId);
         }
+
+        public static bool TryGetComponent<T>(this GameObject go, out T component) where T : Component
+        {
+            component = go.GetComponent<T>();
+            return component != null;
+        }
     }
 }

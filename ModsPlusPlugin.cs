@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace ModsPlus
 {
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInPlugin(ModId, ModName, "1.0.0")]
+    [BepInPlugin(ModId, ModName, "1.2.0")]
     [BepInProcess("Rounds.exe")]
     public class ModsPlusPlugin : BaseUnityPlugin
     {
@@ -22,6 +23,12 @@ namespace ModsPlus
         void Awake()
         {
             Instance = this;
+        }
+
+        void Start()
+        {
+            var harmony = new Harmony(ModId);
+            harmony.PatchAll();
         }
     }
 }

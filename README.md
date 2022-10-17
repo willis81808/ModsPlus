@@ -1,5 +1,42 @@
 # Mods Plus
 
+## Cleaner card creation with `SimpleCard`
+Make a card with fewer lines by extending `SimpleCard` instead of `CustomCard`!
+
+```cs
+using UnityEngine;
+using ModsPlus;
+
+public class ExampleCard : SimpleCard
+{
+	public override CardDetails Details => new CardDetails
+	{
+		Title       = "Example Card",
+		Description = "Your first effect card",
+		ModName     = "<Your Mod ID>",
+		Art         = Assets.YourCoolArt,
+		Rarity      = CardInfo.Rarity.Common,
+		Theme       = CardThemeColor.CardThemeColorType.TechWhite
+	};
+
+	public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
+	{
+		statModifiers.health = 0.5f;
+		gun.damage = 2f;
+	}
+
+	protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+	{
+		Debug.Log("Card added to the player!");
+	}
+
+	protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+	{
+		Debug.Log("Card removed from the player!");
+	}
+}
+```
+
 ## Streamlined (and safe) `CardEffect` wrapper
 Do you find yourself writing the same boilerplate over and over when defining cards that attach a `MonoBehaviour` to the player?
 Are you tired of writing the same code for registering and deregistering actions (such as `Block::BlockAction` or `Gun::ShootProjectileAction`) repeatedly?
@@ -93,6 +130,9 @@ healthBar.CurrentHealth -= 10;
 ```
 
 # Patch Notes
+
+### 1.2.0
+- Added `SimpleCard`
 
 ### 0.0.1
 - Initial release
