@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnboundLib;
 using UnboundLib.Cards;
+using UnboundLib.GameModes;
 using UnityEngine;
 
 namespace ModsPlus
@@ -113,6 +114,18 @@ namespace ModsPlus
             characterStats.WasDealtDamageAction += OnTakeDamageInternal;
             characterStats.OnReloadDoneAction += OnReloadDoneInternal;
             characterStats.OutOfAmmpAction += OnOutOfAmmoInternal;
+
+            GameModeManager.AddHook(GameModeHooks.HookGameEnd, OnGameEndInternal);
+            GameModeManager.AddHook(GameModeHooks.HookGameStart, OnGameStartInternal);
+            GameModeManager.AddHook(GameModeHooks.HookBattleStart, OnBattleStartInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPlayerPickStart, OnStartPickInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPlayerPickEnd, OnEndPickInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPointStart, OnPointStartInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPointEnd, OnPointEndInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPickStart, OnPickPhaseStartInternal);
+            GameModeManager.AddHook(GameModeHooks.HookPickEnd, OnPickPhaseEndInternal);
+            GameModeManager.AddHook(GameModeHooks.HookRoundStart, OnRoundStartInternal);
+            GameModeManager.AddHook(GameModeHooks.HookRoundEnd, OnRoundEndInternal);
         }
 
         protected virtual void OnDestroy()
@@ -131,8 +144,77 @@ namespace ModsPlus
             characterStats.OnReloadDoneAction -= OnReloadDoneInternal;
             characterStats.OutOfAmmpAction -= OnOutOfAmmoInternal;
 
+            GameModeManager.RemoveHook(GameModeHooks.HookGameEnd, OnGameEndInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookGameStart, OnGameStartInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookBattleStart, OnBattleStartInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPlayerPickStart, OnStartPickInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPlayerPickEnd, OnEndPickInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPointStart, OnPointStartInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPointEnd, OnPointEndInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPickStart, OnPickPhaseStartInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookPickEnd, OnPickPhaseEndInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookRoundStart, OnRoundStartInternal);
+            GameModeManager.RemoveHook(GameModeHooks.HookRoundEnd, OnRoundEndInternal);
+
             StopAllCoroutines();
         }
+
+        internal IEnumerator OnGameEndInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnGameEnd(gameModeHandler);
+        }
+        internal IEnumerator OnGameStartInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnGameStart(gameModeHandler);
+        }
+        internal IEnumerator OnBattleStartInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnBattleStart(gameModeHandler);
+        }
+        internal IEnumerator OnStartPickInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnStartPick(gameModeHandler);
+        }
+        internal IEnumerator OnEndPickInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnEndPick(gameModeHandler);
+        }
+        internal IEnumerator OnPointStartInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnPointStart(gameModeHandler);
+        }
+        internal IEnumerator OnPointEndInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnPointEnd(gameModeHandler);
+        }
+        internal IEnumerator OnPickPhaseStartInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnPickPhaseStart(gameModeHandler);
+        }
+        internal IEnumerator OnPickPhaseEndInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnPickPhaseEnd(gameModeHandler);
+        }
+        internal IEnumerator OnRoundStartInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnRoundStart(gameModeHandler);
+        }
+        internal IEnumerator OnRoundEndInternal(IGameModeHandler gameModeHandler)
+        {
+            yield return OnRoundEnd(gameModeHandler);
+        }
+        public virtual IEnumerator OnGameEnd(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnGameStart(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnBattleStart(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnStartPick(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnEndPick(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPointStart(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPointEnd(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPickPhaseStart(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPickPhaseEnd(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnRoundStart(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnRoundEnd(IGameModeHandler gameModeHandler) { yield break; }
+
 
 
         internal void OnUpgradeCardInternal()

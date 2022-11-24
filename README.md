@@ -12,7 +12,7 @@ public class ExampleCard : SimpleCard
 	public override CardDetails Details => new CardDetails
 	{
 		Title       = "Example Card",
-		Description = "Your first simple card",
+		Description = "Your first effect card",
 		ModName     = "<Your Mod ID>",
 		Art         = Assets.YourCoolArt,
 		Rarity      = CardInfo.Rarity.Common,
@@ -27,12 +27,12 @@ public class ExampleCard : SimpleCard
 
 	protected override void Added(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
 	{
-		// Card added to the player!
+		Debug.Log("Card added to the player!");
 	}
 
 	protected override void Removed(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
 	{
-		// Card removed from the player!
+		Debug.Log("Card removed from the player!");
 	}
 }
 ```
@@ -130,6 +130,9 @@ healthBar.CurrentHealth -= 10;
 ```
 
 # Patch Notes
+
+### 1.3.0
+- Added Game Mode hooks
 
 ### 1.2.0
 - Added `SimpleCard`

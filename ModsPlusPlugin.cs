@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ModsPlus
 {
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInPlugin(ModId, ModName, "1.2.0")]
+    [BepInPlugin(ModId, ModName, "1.3.0")]
     [BepInProcess("Rounds.exe")]
     public class ModsPlusPlugin : BaseUnityPlugin
     {
