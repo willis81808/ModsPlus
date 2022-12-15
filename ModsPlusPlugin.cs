@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace ModsPlus
 {
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInPlugin(ModId, ModName, "1.3.0")]
+    [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInPlugin(ModId, ModName, "1.4.1")]
     [BepInProcess("Rounds.exe")]
     public class ModsPlusPlugin : BaseUnityPlugin
     {

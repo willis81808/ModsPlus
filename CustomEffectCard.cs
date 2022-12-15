@@ -114,6 +114,7 @@ namespace ModsPlus
             characterStats.WasDealtDamageAction += OnTakeDamageInternal;
             characterStats.OnReloadDoneAction += OnReloadDoneInternal;
             characterStats.OutOfAmmpAction += OnOutOfAmmoInternal;
+            data.jump.JumpAction += OnJumpInternal;
 
             GameModeManager.AddHook(GameModeHooks.HookGameEnd, OnGameEndInternal);
             GameModeManager.AddHook(GameModeHooks.HookGameStart, OnGameStartInternal);
@@ -143,6 +144,7 @@ namespace ModsPlus
             characterStats.WasDealtDamageAction -= OnTakeDamageInternal;
             characterStats.OnReloadDoneAction -= OnReloadDoneInternal;
             characterStats.OutOfAmmpAction -= OnOutOfAmmoInternal;
+            data.jump.JumpAction -= OnJumpInternal;
 
             GameModeManager.RemoveHook(GameModeHooks.HookGameEnd, OnGameEndInternal);
             GameModeManager.RemoveHook(GameModeHooks.HookGameStart, OnGameStartInternal);
@@ -287,7 +289,11 @@ namespace ModsPlus
             OnOutOfAmmo(bulletsReloaded);
             StartCoroutine(OnOutOfAmmoCoroutine(bulletsReloaded));
         }
-
+        internal void OnJumpInternal()
+        {
+            OnJump();
+            StartCoroutine(OnJumpCoroutine());
+        }
 
         public virtual void OnUpgradeCard() { }
         public virtual void OnShoot(GameObject projectile) { }
@@ -303,6 +309,7 @@ namespace ModsPlus
         public virtual void OnTakeDamage(Vector2 damage, bool selfDamage) { }
         public virtual void OnReloadDone(int bulletsReloaded) { }
         public virtual void OnOutOfAmmo(int bulletsReloaded) { }
+        public virtual void OnJump() { }
 
         public virtual IEnumerator OnUpgradeCardCoroutine() { yield return null; }
         public virtual IEnumerator OnShootCoroutine(GameObject projectile) { yield return null; }
@@ -318,5 +325,6 @@ namespace ModsPlus
         public virtual IEnumerator OnTakeDamageCoroutine(Vector3 damage, bool selfDamage) { yield return null; }
         public virtual IEnumerator OnReloadDoneCoroutine(int bulletsReloaded) { yield return null; }
         public virtual IEnumerator OnOutOfAmmoCoroutine(int bulletsReloaded) { yield return null; }
+        public virtual IEnumerator OnJumpCoroutine() { yield return null; }
     }
 }
