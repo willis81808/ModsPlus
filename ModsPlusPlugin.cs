@@ -11,7 +11,7 @@ namespace ModsPlus
 {
     [BepInDependency("com.willis.rounds.unbound", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInPlugin(ModId, ModName, "1.4.1")]
+    [BepInPlugin(ModId, ModName, "1.5.0")]
     [BepInProcess("Rounds.exe")]
     public class ModsPlusPlugin : BaseUnityPlugin
     {

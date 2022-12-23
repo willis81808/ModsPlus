@@ -218,14 +218,20 @@ namespace ModsPlus
         public virtual IEnumerator OnRoundEnd(IGameModeHandler gameModeHandler) { yield break; }
 
 
-
         internal void OnUpgradeCardInternal()
         {
             OnUpgradeCard();
             StartCoroutine(OnUpgradeCardCoroutine());
         }
+        internal HasToReturn OnBulletHitInternal(GameObject projectile, HitInfo hit)
+        {
+            OnBulletHit(projectile, hit);
+            StartCoroutine(OnBulletHitCoroutine(projectile, hit));
+            return HasToReturn.canContinue;
+        }
         internal void OnShootInternal(GameObject projectile)
         {
+            projectile.AddComponent<BulletHitEvent>().OnHit += OnBulletHitInternal;
             OnShoot(projectile);
             StartCoroutine(OnShootCoroutine(projectile));
         }
@@ -296,6 +302,7 @@ namespace ModsPlus
         }
 
         public virtual void OnUpgradeCard() { }
+        public virtual void OnBulletHit(GameObject projectile, HitInfo hit) { }
         public virtual void OnShoot(GameObject projectile) { }
         public virtual void OnTouchGround(float timeSinceGrounded, Vector3 position, Vector3 groundNormal, Transform groundTransform) { }
         public virtual void OnTouchWall(float timeSinceLastGrab, Vector3 position, Vector3 wallNormal) { }
@@ -312,6 +319,7 @@ namespace ModsPlus
         public virtual void OnJump() { }
 
         public virtual IEnumerator OnUpgradeCardCoroutine() { yield return null; }
+        public virtual IEnumerator OnBulletHitCoroutine(GameObject projectile, HitInfo hit) { yield return null; }
         public virtual IEnumerator OnShootCoroutine(GameObject projectile) { yield return null; }
         public virtual IEnumerator OnTouchGroundCoroutine(float timeSinceGrounded, Vector3 position, Vector3 groundNormal, Transform groundTransform) { yield return null; }
         public virtual IEnumerator OnTouchWallCoroutine(float timeSinceLastGrab, Vector3 position, Vector3 wallNormal) { yield return null; }
@@ -326,5 +334,16 @@ namespace ModsPlus
         public virtual IEnumerator OnReloadDoneCoroutine(int bulletsReloaded) { yield return null; }
         public virtual IEnumerator OnOutOfAmmoCoroutine(int bulletsReloaded) { yield return null; }
         public virtual IEnumerator OnJumpCoroutine() { yield return null; }
+    }
+
+    internal class BulletHitEvent : RayHitEffect
+    {
+        public delegate HasToReturn HitEvent(GameObject projectile, HitInfo hit);
+        public event HitEvent OnHit;
+
+        public override HasToReturn DoHitEffect(HitInfo hit)
+        {
+            return OnHit.Invoke(gameObject, hit);
+        }
     }
 }

@@ -56,6 +56,7 @@ namespace ModsPlus
             PlayerSize = 1,
             MaxHealth = 1,
             BulletSpread = 1,
+            BulletSpeed = 1,
             JumpHeight = 1;
     }
 
@@ -78,18 +79,18 @@ namespace ModsPlus
             characterStatModifiersModifier.jump_mult = statChanges.JumpHeight;
 
             characterDataModifier.numberOfJumps_add = statChanges.Jumps;
+            characterDataModifier.maxHealth_mult = statChanges.MaxHealth;
 
             gravityModifier.gravityForce_mult = statChanges.PlayerGravity;
 
+            gunStatModifier.numberOfProjectiles_add = statChanges.Bullets;
             gunStatModifier.spread_mult = statChanges.BulletSpread;
             gunStatModifier.attackSpeed_mult = statChanges.AttackSpeed;
             gunStatModifier.gravity_mult = statChanges.ProjectileGravity;
-            gunStatModifier.numberOfProjectiles_add = statChanges.Bullets;
             gunStatModifier.damage_mult = statChanges.Damage;
+            gunStatModifier.projectileSpeed_mult = statChanges.BulletSpeed;
 
             gunAmmoStatModifier.maxAmmo_add = statChanges.MaxAmmo;
-
-            characterDataModifier.maxHealth_mult = statChanges.MaxHealth;
 
             status.active = true;
         }
