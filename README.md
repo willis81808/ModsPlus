@@ -1,5 +1,25 @@
 # Mods Plus
 
+## Easy access to important events with `PlayerHook`
+Simply extend `PlayerHook` to define your custom behaviors then attach it to a player.
+
+```cs
+public class ExampleHooks : PlayerHook
+{
+	override void OnJump()
+	{
+		UnityEngine.Debug.Log("Player jumped!");
+	}
+
+
+	public override IEnumerator OnBattleStart(IGameModeHandler gameModeHandler)
+	{
+		yield return new WaitForSeconds(5f);
+		UnityEngine.Debug.Log("The battle started 5 seconds ago!");
+	}
+}
+```
+
 ## Cleaner card creation with `SimpleCard`
 Make a card with fewer lines by extending `SimpleCard` instead of `CustomCard`!
 
@@ -130,6 +150,25 @@ healthBar.CurrentHealth -= 10;
 ```
 
 # Patch Notes
+
+### 1.5.3
+- Added `PlayerHook` class
+
+### 1.5.2
+- Updated to incorporate changes in newest version of ModdingUtils
+
+### 1.5.1
+- Fixed `MaxHealth` changes using `StatManager` not properly scaling current health
+
+### 1.5.0
+- Added `OnBulletHit` and `OnBulletHitCoroutine` events to `CardEffect`
+
+### 1.4.1
+- Fixed the `StatManager` using the wrong stat for jump count
+
+### 1.4.0
+- Added Jump hook to `CardEffect`
+- Implemented the `StatManager` beta for simple-inline declaration of `ReversibleEffects`
 
 ### 1.3.0
 - Added Game Mode hooks

@@ -17,7 +17,7 @@ namespace ModsPlus
 
         public class CardDetails
         {
-            public string Title { get; set; } = $"Simple Card {Random.value}";
+            public string Title { get; set; } = null;
             public string Description { get; set; } = $"Simple Card description";
             public string ModName { get; set; } = "Modded";
             public bool OwnerOnly { get; set; } = false;
@@ -44,7 +44,13 @@ namespace ModsPlus
             base.OnRemoveCard();
         }
 
-        protected sealed override string GetTitle() => Details.Title;
+        protected sealed override string GetTitle()
+        {
+            if (String.IsNullOrWhiteSpace(Details.Title))
+                throw new Exception($"Simple cards must have a name!\nMod Name: {GetModName()}\nDescription: {GetDescription()}");
+
+            return Details.Title;
+        }
         protected sealed override string GetDescription() => Details.Description;
         public sealed override string GetModName() => Details.ModName;
         protected sealed override CardInfo.Rarity GetRarity() => Details.Rarity;

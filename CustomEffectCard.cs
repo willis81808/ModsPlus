@@ -29,9 +29,11 @@ namespace ModsPlus
 
         public sealed override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
+            Added(player, gun, gunAmmo, data, health, gravity, block, characterStats);
+
             if (Details.OwnerOnly && !player.data.view.IsMine) return;
 
-            var effect = player.gameObject.GetComponent<T>();
+            var effect = player.gameObject.GetComponentInChildren<T>();
 
             if (effect != null)
             {
@@ -39,22 +41,17 @@ namespace ModsPlus
             }
             else
             {
-                player.gameObject.AddComponent<T>().Initialize(player, gun, gunAmmo, data, health, gravity, block, characterStats);
+                effect = new GameObject($"{Details.Title} effect").AddComponent<T>();
+                effect.transform.SetParent(player.transform);
+                effect.transform.localPosition = Vector3.zero;
+                effect.Initialize(player, gun, gunAmmo, data, health, gravity, block, characterStats);
+                player.data.stats.objectsAddedToPlayer.Add(effect.gameObject);
             }
-
-            Added(player, gun, gunAmmo, data, health, gravity, block, characterStats);
         }
 
         public sealed override void OnRemoveCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             if (Details.OwnerOnly && !player.data.view.IsMine) return;
-
-            var effect = player.gameObject.GetComponent<T>();
-
-            if (effect != null)
-            {
-                Destroy(effect);
-            }
 
             Removed(player, gun, gunAmmo, data, health, gravity, block, statModifiers);
         }
@@ -221,84 +218,100 @@ namespace ModsPlus
         internal void OnUpgradeCardInternal()
         {
             OnUpgradeCard();
-            StartCoroutine(OnUpgradeCardCoroutine());
+            SafeStartCoroutine(OnUpgradeCardCoroutine());
         }
         internal HasToReturn OnBulletHitInternal(GameObject projectile, HitInfo hit)
         {
             OnBulletHit(projectile, hit);
-            StartCoroutine(OnBulletHitCoroutine(projectile, hit));
+            SafeStartCoroutine(OnBulletHitCoroutine(projectile, hit));
             return HasToReturn.canContinue;
         }
         internal void OnShootInternal(GameObject projectile)
         {
             projectile.AddComponent<BulletHitEvent>().OnHit += OnBulletHitInternal;
             OnShoot(projectile);
-            StartCoroutine(OnShootCoroutine(projectile));
+            SafeStartCoroutine(OnShootCoroutine(projectile));
         }
         internal void OnTouchGroundInternal(float timeSinceGrounded, Vector3 position, Vector3 groundNormal, Transform groundTransform)
         {
             OnTouchGround(timeSinceGrounded, position, groundNormal, groundTransform);
-            StartCoroutine(OnTouchGroundCoroutine(timeSinceGrounded, position, groundNormal, groundTransform));
+            SafeStartCoroutine(OnTouchGroundCoroutine(timeSinceGrounded, position, groundNormal, groundTransform));
         }
         internal void OnTouchWallInternal(float timeSinceLastGrab, Vector3 position, Vector3 wallNormal)
         {
             OnTouchWall(timeSinceLastGrab, position, wallNormal);
-            StartCoroutine(OnTouchWallCoroutine(timeSinceLastGrab, position, wallNormal));
+            SafeStartCoroutine(OnTouchWallCoroutine(timeSinceLastGrab, position, wallNormal));
         }
         internal void OnReviveInternal()
         {
-            OnRevive();
-            StartCoroutine(OnReviveCoroutine());
+            SafeExecuteAction(OnRevive);
+            SafeStartCoroutine(OnReviveCoroutine());
         }
         internal void OnDelayedReviveInternal()
         {
-            OnDelayedRevive();
-            StartCoroutine(OnDelayedReviveCoroutine());
+            SafeExecuteAction(OnDelayedRevive);
+            SafeStartCoroutine(OnDelayedReviveCoroutine());
         }
         internal void OnBlockInternal(BlockTrigger.BlockTriggerType blockTriggerType)
         {
             OnBlock(blockTriggerType);
-            StartCoroutine(OnBlockCoroutine(blockTriggerType));
+            SafeStartCoroutine(OnBlockCoroutine(blockTriggerType));
         }
         internal void OnBlockEarlyInternal(BlockTrigger.BlockTriggerType blockTriggerType)
         {
             OnBlockEarly(blockTriggerType);
-            StartCoroutine(OnBlockEarlyCoroutine(blockTriggerType));
+            SafeStartCoroutine(OnBlockEarlyCoroutine(blockTriggerType));
         }
         internal void OnBlockProjectileInternal(GameObject projectile, Vector3 forward, Vector3 hitPosition)
         {
             OnBlockProjectile(projectile, forward, hitPosition);
-            StartCoroutine(OnBlockProjectileCoroutine(projectile, forward, hitPosition));
+            SafeStartCoroutine(OnBlockProjectileCoroutine(projectile, forward, hitPosition));
         }
         internal void OnBlockRechargeInternal()
         {
             OnBlockRecharge();
-            StartCoroutine(OnBlockRechargeCoroutine());
+            SafeStartCoroutine(OnBlockRechargeCoroutine());
         }
         internal void OnDealtDamageInternal(Vector2 damage, bool selfDamage)
         {
             OnDealtDamage(damage, selfDamage);
-            StartCoroutine(OnDealtDamageCoroutine(damage, selfDamage));
+            SafeStartCoroutine(OnDealtDamageCoroutine(damage, selfDamage));
         }
         internal void OnTakeDamageInternal(Vector2 damage, bool selfDamage)
         {
             OnTakeDamage(damage, selfDamage);
-            StartCoroutine(OnTakeDamageCoroutine(damage, selfDamage));
+            SafeStartCoroutine(OnTakeDamageCoroutine(damage, selfDamage));
         }
         internal void OnReloadDoneInternal(int bulletsReloaded)
         {
             OnReloadDone(bulletsReloaded);
-            StartCoroutine(OnReloadDoneCoroutine(bulletsReloaded));
+            SafeStartCoroutine(OnReloadDoneCoroutine(bulletsReloaded));
         }
         internal void OnOutOfAmmoInternal(int bulletsReloaded)
         {
             OnOutOfAmmo(bulletsReloaded);
-            StartCoroutine(OnOutOfAmmoCoroutine(bulletsReloaded));
+            SafeStartCoroutine(OnOutOfAmmoCoroutine(bulletsReloaded));
         }
         internal void OnJumpInternal()
         {
             OnJump();
-            StartCoroutine(OnJumpCoroutine());
+            SafeStartCoroutine(OnJumpCoroutine());
+        }
+
+        private void SafeStartCoroutine(IEnumerator coroutine)
+        {
+            Unbound.Instance.StartCoroutine(ExecuteWhenPlayerActive(() => player.StartCoroutine(coroutine)));
+        }
+
+        private void SafeExecuteAction(Action action)
+        {
+            Unbound.Instance.StartCoroutine(ExecuteWhenPlayerActive(action));
+        }
+
+        private IEnumerator ExecuteWhenPlayerActive(Action action)
+        {
+            yield return new WaitUntil(() => player.gameObject.activeInHierarchy);
+            action?.Invoke();
         }
 
         public virtual void OnUpgradeCard() { }
