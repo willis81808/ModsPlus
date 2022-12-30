@@ -34,6 +34,7 @@ namespace ModsPlus
         }
     }
 
+    [Serializable]
     public class StatChanges
     {
         /// <summary>

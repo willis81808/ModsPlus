@@ -151,6 +151,10 @@ healthBar.CurrentHealth -= 10;
 
 # Patch Notes
 
+### 1.5.4
+- Made `Awake` method in `PlayerHook` overridable
+- Made `StatChanges` serializable by the Unity inspector 
+
 ### 1.5.3
 - Added `PlayerHook` class
 

@@ -10,7 +10,7 @@ namespace ModsPlus
 {
     public class PlayerHook : CardEffect
     {
-        private void Awake()
+        protected virtual void Awake()
         {
             var player = GetComponentInParent<Player>();
             var data = player.data;
