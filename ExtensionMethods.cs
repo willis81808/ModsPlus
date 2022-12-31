@@ -26,5 +26,16 @@ namespace ModsPlus
             component = go.GetComponent<T>();
             return component != null;
         }
+
+        public static bool VisibleFrom(this Player p, Vector3 origin)
+        {
+            return p.VisibleFrom(origin, LayerMask.GetMask("Default"));
+        }
+
+        public static bool VisibleFrom(this Player p, Vector3 origin, int layerMask)
+        {
+            var hit = Physics2D.Raycast(origin, Vector3.Normalize(p.transform.position - origin), Vector3.Distance(origin, p.transform.position));
+            return hit.collider == null;
+        }
     }
 }

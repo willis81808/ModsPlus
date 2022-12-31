@@ -151,6 +151,9 @@ healthBar.CurrentHealth -= 10;
 
 # Patch Notes
 
+### 1.5.5
+- Added `VisibleFrom` extension methods to `Player` 
+
 ### 1.5.4
 - Made `Awake` method in `PlayerHook` overridable
 - Made `StatChanges` serializable by the Unity inspector 
