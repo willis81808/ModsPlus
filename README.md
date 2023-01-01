@@ -1,5 +1,13 @@
 # Mods Plus
 
+## Custom Card Bar abbreviations
+When registering a card you can set a custom two character abbreviation to be displayed in the card bar, simply do the following:
+```cs
+CustomCard.BuildCard<ExampleCard>(c => c.SetAbbreviation("Ex"));
+```
+- An exception will be thrown if the string passed is null or only whitespace characters.
+- If the abbreviation passed is longer than 2 characters it will be truncated.
+
 ## Easy access to important events with `PlayerHook`
 Simply extend `PlayerHook` to define your custom behaviors then attach it to a player.
 
@@ -150,6 +158,9 @@ healthBar.CurrentHealth -= 10;
 ```
 
 # Patch Notes
+
+### 1.5.6
+- Added an extension method to `CardInfo` for setting a custom abbreviation to be displayed in the `CardBarButton`
 
 ### 1.5.5
 - Added `VisibleFrom` extension methods to `Player` 
