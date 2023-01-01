@@ -365,6 +365,8 @@
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ModsPlusPlugin.cs" />
     <Compile Include="NetworkedRandom.cs" />
+    <Compile Include="Patches\CardBarPatches.cs" />
+    <Compile Include="Patches\HealthBarPatches.cs" />
     <Compile Include="PlayerHook.cs" />
     <Compile Include="PlayerSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnboundLib;
+using ModsPlus.Patches;
 
 namespace ModsPlus
 {
@@ -36,6 +37,56 @@ namespace ModsPlus
         {
             var hit = Physics2D.Raycast(origin, Vector3.Normalize(p.transform.position - origin), Vector3.Distance(origin, p.transform.position));
             return hit.collider == null;
+        }
+
+        public static void SetAbbreviation(this CardInfo card, string abbreviation)
+        {
+            if (string.IsNullOrWhiteSpace(abbreviation))
+            {
+                throw new Exception($"[ModsPlus] - Attempted to set a card abbreviation to a null or empty string for card: {card.cardName}");
+            }
+            else if (abbreviation.Length > 2)
+            {
+                UnityEngine.Debug.LogWarning($"[ModsPlus] - Attempted to set card abbreviation for {card.cardName} to {abbreviation}, which is more than 2 characters long, will be truncated!");
+            }
+
+            var text = abbreviation.Substring(0, 2);
+            string text2 = text[0].ToString().ToUpper();
+            if (text.Length > 1)
+            {
+                string str = text[1].ToString().ToLower();
+                text = text2 + str;
+            }
+            else
+            {
+                text = text2;
+            }
+
+            CardBarPatches.customAbbreviations[card] = text;
+        }
+
+        public static string GetAbbreviation(this CardInfo card)
+        {
+            if (CardBarPatches.customAbbreviations.TryGetValue(card, out string abbr))
+            {
+                return abbr;
+            }
+            else
+            {
+                string text = card.cardName;
+                text = text.Substring(0, 2);
+                string text2 = text[0].ToString().ToUpper();
+                if (text.Length > 1)
+                {
+                    string str = text[1].ToString().ToLower();
+                    text = text2 + str;
+                }
+                else
+                {
+                    text = text2;
+                }
+                return text;
+            }
         }
     }
 }
