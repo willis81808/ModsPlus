@@ -51,12 +51,16 @@ namespace ModsPlus
 
         private void SetCurrentHealth(float value)
         {
+            if (_currentHealth == value) return;
+
             _currentHealth = Math.Max(0, Math.Min(MaxHealth, value));
             UpdateHealthBar();
         }
 
         private void SetMaxHealth(float value)
         {
+            if (_maxHealth == value) return;
+
             _maxHealth = Math.Max(0, value);
             UpdateHealthBar();
         }
@@ -72,6 +76,15 @@ namespace ModsPlus
         public HealthBar GetBaseHealthBar()
         {
             return healthBar;
+        }
+
+        /// <summary>
+        /// Sets the fill color of the bar
+        /// </summary>
+        /// <param name="color"></param>
+        public void SetColor(Color color)
+        {
+            GetBaseHealthBar().transform.Find("Canvas/Image/Health").GetComponent<Image>().color = color;
         }
     }
 }
