@@ -372,6 +372,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleCard.cs" />
     <Compile Include="StatManager.cs" />
+    <Compile Include="StatusManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

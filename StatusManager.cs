@@ -36,13 +36,20 @@ namespace ModsPlus
             {
                 offset += Vector3.up * 0.25f + Vector3.up * obj.verticalPadding;
                 obj.transform.localPosition = offset;
+                offset += Vector3.up * obj.verticalPadding;
             }
         }
 
-        public void AddStatusObject(GameObject statusObj, float verticalPadding)
+        public void AddStatusObject(GameObject statusObj, float verticalPadding, bool normalizeScale)
         {
             var obj = statusObj.AddComponent<StatusObject>().Initialize(this, verticalPadding);
             obj.transform.SetParent(Holder);
+
+            if (normalizeScale)
+            {
+                obj.transform.localScale = Vector3.one;
+            }
+
             objects.Add(obj);
         }
 
