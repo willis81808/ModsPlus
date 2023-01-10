@@ -31,7 +31,7 @@ namespace ModsPlus
         {
             if (objects.Count == 0) return;
 
-            var offset = Vector3.up * 0.25f;
+            var offset = Vector3.zero;
             foreach (var obj in objects)
             {
                 offset += Vector3.up * 0.25f + Vector3.up * obj.verticalPadding;
