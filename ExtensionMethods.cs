@@ -39,6 +39,13 @@ namespace ModsPlus
             return hit.collider == null;
         }
 
+        public static void AddStatusIndicator(this Player player, GameObject statusObj, float verticalPadding = 0f)
+        {
+            player.GetComponentInChildren<PlayerWobblePosition>().gameObject
+                .GetOrAddComponent<StatusManager>()
+                .AddStatusObject(statusObj, verticalPadding);
+        }
+
         public static void SetAbbreviation(this CardInfo card, string abbreviation)
         {
             if (string.IsNullOrWhiteSpace(abbreviation))
