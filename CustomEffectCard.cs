@@ -172,10 +172,12 @@ namespace ModsPlus
         }
         internal IEnumerator OnStartPickInternal(IGameModeHandler gameModeHandler)
         {
+            yield return OnPlayerPickStart(gameModeHandler);
             yield return OnStartPick(gameModeHandler);
         }
         internal IEnumerator OnEndPickInternal(IGameModeHandler gameModeHandler)
         {
+            yield return OnPlayerPickEnd(gameModeHandler);
             yield return OnEndPick(gameModeHandler);
         }
         internal IEnumerator OnPointStartInternal(IGameModeHandler gameModeHandler)
@@ -205,8 +207,12 @@ namespace ModsPlus
         public virtual IEnumerator OnGameEnd(IGameModeHandler gameModeHandler) { yield break; }
         public virtual IEnumerator OnGameStart(IGameModeHandler gameModeHandler) { yield break; }
         public virtual IEnumerator OnBattleStart(IGameModeHandler gameModeHandler) { yield break; }
+        [Obsolete("Use `OnPlayerPickStart` instead")]
         public virtual IEnumerator OnStartPick(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPlayerPickStart(IGameModeHandler gameModeHandler) { yield break; }
+        [Obsolete("Use `OnPlayerPickEnd` instead")]
         public virtual IEnumerator OnEndPick(IGameModeHandler gameModeHandler) { yield break; }
+        public virtual IEnumerator OnPlayerPickEnd(IGameModeHandler gameModeHandler) { yield break; }
         public virtual IEnumerator OnPointStart(IGameModeHandler gameModeHandler) { yield break; }
         public virtual IEnumerator OnPointEnd(IGameModeHandler gameModeHandler) { yield break; }
         public virtual IEnumerator OnPickPhaseStart(IGameModeHandler gameModeHandler) { yield break; }
